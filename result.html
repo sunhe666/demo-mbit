@@ -255,122 +255,54 @@
       var $ = function(id) { return document.getElementById(id); };
 
       var QUESTIONS = [
-        { id:1,  category:'骚操作', A:'可能在忙，晚点回我',              B:'完了，是不是我说错话了' },
-        { id:2,  category:'骚操作', A:'无所谓，反正我自己开心',          B:'删掉，这图配不上我的颜值' },
-        { id:3,  category:'骚操作', A:'回个晚安，继续刷剧',              B:'盯着对话框等，想他到底睡了没' },
-        { id:4,  category:'骚操作', A:'点个赞表情包，心里记下这名字',     B:'评论区打字又删，删了又打' },
-        { id:5,  category:'骚操作', A:'不等了，该干嘛干嘛',               B:'开始后悔是不是不该回那么短' },
-        { id:6,  category:'骚操作', A:'疯狂打字发消息，写小作文',         B:'不说话，等对方先道歉' },
-        { id:7,  category:'感情观', A:'冷暴力，读完不回',                 B:'翻旧账，吵架拿前任说事' },
-        { id:8,  category:'感情观', A:'直接带我去吃好吃的，别墨迹',       B:'慢慢来，先聊一个月再说' },
-        { id:9,  category:'感情观', A:'该干嘛干嘛，不当回事',             B:'打开对话框看三遍，想他干嘛去了' },
-        { id:10, category:'感情观', A:'当没看见，反正就一个赞',           B:'去翻那女生是谁，到底什么关系' },
-        { id:11, category:'感情观', A:'绝对不舔，谁先认真谁输',           B:'遇到对的可以舔，不丢人' },
-        { id:12, category:'感情观', A:'拉黑删除清空，快速翻篇',           B:'保留联系方式，偶尔偷看动态' },
-        { id:13, category:'日常发疯', A:'看书学习提升自己',              B:'点外卖刷剧躺一天' },
-        { id:14, category:'日常发疯', A:'带异性回来过夜还不说',           B:'用你东西不打招呼，用完不还' },
-        { id:15, category:'日常发疯', A:'笑着配合，回头再说',             B:'当场黑脸，拉她到一边说' },
-        { id:16, category:'日常发疯', A:'不回复，心里拉黑他',             B:'直接怼回去，别惹我' },
-        { id:17, category:'日常发疯', A:'怼回去：滚，你才丑',             B:'当她开玩笑，笑着骂一句' },
-        { id:18, category:'日常发疯', A:'外表高冷，内心想很多',           B:'纯粹搞笑女，疯疯癫癫的那种' },
+        { id:1,  category:'爱情观', A:'选爱情，感情最重要',         B:'选事业，钱才是真的' },
+        { id:2,  category:'爱情观', A:'有10元给我9元的',            B:'有100万给我10万的' },
+        { id:3,  category:'爱情观', A:'先找爱我的，再追求两情相悦',  B:'我爱的人，否则没意义' },
+        { id:4,  category:'爱情观', A:'有男朋友的，只有一个竞争对手',B:'单身的，选择更多' },
+        { id:5,  category:'爱情观', A:'先找到女朋友后再专一',        B:'找的时候就要专一' },
+        { id:6,  category:'爱情观', A:'钱是给女人看的，不是给女人花的',B:'真诚才是必杀技' },
+        { id:7,  category:'爱情观', A:'心中无女人，保持清醒',        B:'身边没女人，行动上也没有' },
+        { id:8,  category:'爱情观', A:'好女孩不辜负，坏女孩不浪费',  B:'一视同仁，真心对待每个人' },
+        { id:9,  category:'爱情观', A:'日久生情，相处后才真实',      B:'一见钟情，感觉对了就冲' },
+        { id:10, category:'爱情观', A:'发誓可以，发朋友圈不行',      B:'大大方方，爱就公开' },
       ];
 
-      var LOVE_MAP = {
+      var CAT_MAP = {
         A: {
-          desc: '恭喜你，你属于情绪稳定、人间清醒型。看到已读不回？无所谓；看到他和别的女生合照？先点个赞再说。你不是不爱，你只是很擅长把自己保护得很好。内心戏偶尔有，但你能快速自我消化，不会让情绪绑架生活。你适合找一个同样独立、有分寸感的人，别找那种需要你 24 小时哄着的，因为你的耐心真的不太够。',
-          tags: ['人间清醒', '情绪稳定', '自我消化']
+          desc: '你的恋爱观偏理性务实，和童锦程这套打法高度契合。你心里门清：钱是底气，先谋生再谋爱；感情里不玩虚的，要的是实际付出和清醒的脑子。你不太会被甜言蜜语冲昏头，恋爱也好分手也好，都能拎得清。你的优势是：不容易受伤，因为早就不把期待放在别人身上。建议：继续保持清醒，但偶尔允许自己冲动一次，不然真的会活得很累。',
+          tags: ['人间清醒', '务实派', '感情拎得清']
         },
         B: {
-          desc: '你是那种典型的嘴硬心软、内心戏超多的类型。一条消息没秒回，你已经把分手剧本写完了；看到他和别人合照，你已经开始查户口了。你不是不优秀，只是容易在感情里变得患得患失。发消息之前会反复编辑，吵架时要么写小作文要么直接冷战。别嫌弃自己——正因为你认真，你才会这样。但学会把注意力分一点给自己，你会更轻松。',
-          tags: ['内心戏多', '容易上头', '认真投入']
+          desc: '你的恋爱观偏感性浪漫，和童锦程这套完全不是一个路数。你相信感觉、相信爱情本身、相信真心能换真心。选你爱的人而不是爱你的？没问题，你就是要奔着心动去。这种人最大的风险是：容易恋爱脑，容易被套路骗，容易在一段烂感情里耗太久。建议：保持你的真心，但给它装一个止损线，不然到最后伤得最深的还是你自己。',
+          tags: ['恋爱脑', '感觉派', '真心换真心']
         }
       };
 
-      var VALUE_MAP = {
-        A: {
-          desc: '你是一个把感情和生活分得很开的人。分手能快速翻篇，不会在烂人身上浪费太多时间；发朋友圈点赞少？说删就删，不内耗。你的逻辑是：与其纠结别人怎么看，不如专注让自己开心。你不是冷漠，你只是很早就明白——情绪是自己的，与其用来消耗，不如用来好好生活。保持这个状态，但偶尔也允许自己脆弱一下。',
-          tags: ['拎得清', '快速翻篇', '专注自己']
-        },
-        B: {
-          desc: '你是那种嘴上说着无所谓，心里已经演了八百集的类型。你对感情认真到有点较真，翻旧账也好、偷看前任动态也好，本质上是因为你真的在乎过。你在关系里容易用力过猛，爱得太满反而让自己疲惫。试着把一部分"在意"分给自己，你会发现世界没有想象中那么需要你去撑场子。',
-          tags: ['用力过猛', '爱得太满', '容易上头']
-        }
-      };
-
-      var FAM_MAP = {
-        A: {
-          desc: '你是那种在外人眼里"高冷有距离感"的人，其实不是不想社交，是懒得表演。在家看书学习，出门独来独往，群里有阴阳怪气你直接无视。你的内心世界很丰富，不需要靠热闹来填满。适合你的人应该是能欣赏你这种淡然气质的人，而不是总想拉你"活泼一点"的人。当然，偶尔出门social一下也不错，不然真的会和社会脱节。',
-          tags: ['独来独往', '高冷淡然', '精神丰富']
-        },
-        B: {
-          desc: '你是那种谁和你待在一起都很开心的人——搞笑、会接梗、气氛担当。在家点外卖刷剧，朋友圈发自拍被闺蜜损然后怼回去，和室友相爱相杀。你是那种活得特别真实的人，不端着，不装。你的世界里没有"尴尬"两个字，吵架就直接吵，吵完该吃吃该喝喝。保持这种状态，开心果本果就是你。',
-          tags: ['搞笑担当', '真实不装', '人来疯']
-        }
-      };
-
-      function getCatResult(answers, indices, typeMap) {
+      function getResult(answers) {
         var aCount = 0;
-        for (var i = 0; i < indices.length; i++) {
-          if (answers[indices[i]] === 'A') aCount++;
+        for (var i = 0; i < answers.length; i++) {
+          if (answers[i] === 'A') aCount++;
         }
-        var total = indices.length;
+        var total = answers.length;
         var bCount = total - aCount;
         var aPct = Math.round(aCount / total * 100);
         var bPct = 100 - aPct;
         var dominant = aCount > bCount ? 'A' : (aCount < bCount ? 'B' : 'A');
-        var traits = typeMap[dominant];
+        var traits = CAT_MAP[dominant];
         return { aCount: aCount, bCount: bCount, aPct: aPct, bPct: bPct, dominant: dominant, desc: traits.desc, tags: traits.tags };
       }
 
-      function catCard(badgeCls, badgeTxt, result) {
+      function buildCard(result) {
         var fill = result.dominant === 'A' ? 'a' : 'b';
         var tagHtml = '';
         for (var i = 0; i < result.tags.length; i++) {
           tagHtml += '<span class="cat-tag cat-tag--' + fill + '">' + result.tags[i] + '</span>';
         }
-        return '<section class="card category-card" aria-label="' + badgeTxt + '结果">' +
-          '<div class="cat-badge ' + badgeCls + '">' + badgeTxt + '</div>' +
-          '<h2 class="cat-title">' + (result.dominant === 'A' ? 'A 型倾向' : 'B 型倾向') + '</h2>' +
-          '<div class="cat-tags">' + tagHtml + '</div>' +
-          '<p class="cat-desc">' + result.desc + '</p>' +
-          '<div class="cat-progress-wrap">' +
-          '<div class="cat-progress-label">' +
-          '<span>A型 ' + result.aPct + '%</span>' +
-          '<span>B型 ' + result.bPct + '%</span>' +
-          '</div>' +
-          '<div class="cat-progress">' +
-          '<div class="cat-progress__fill cat-progress__fill--' + fill + '" style="width:' + (result.dominant === 'A' ? result.aPct : result.bPct) + '%"></div>' +
-          '</div></div></section>';
-      }
-
-      function renderResult(answers) {
-        var loveResult  = getCatResult(answers, [0,1,2,3,4,5],   LOVE_MAP);
-        var valueResult = getCatResult(answers, [6,7,8,9,10,11], VALUE_MAP);
-        var famResult   = getCatResult(answers, [12,13,14,15,16,17], FAM_MAP);
-
-        var aTotal = 0, bTotal = 0;
-        for (var i = 0; i < answers.length; i++) {
-          if (answers[i] === 'A') aTotal++;
-          else bTotal++;
-        }
-        var bPct = Math.round(bTotal / 18 * 100);
-        var tagline = loveResult.dominant === 'B'
-          ? '内心戏再多，也别忘了自己才是主角。'
-          : '人间清醒归清醒，偶尔发疯也挺可爱。';
-
-        var chipHtml = '';
-        for (var j = 0; j < QUESTIONS.length; j++) {
-          var ans = answers[j];
-          var cls = ans === 'A' ? 'a' : 'b';
-          var label = ans === 'A' ? QUESTIONS[j].A.substring(0, 6) + '…' : QUESTIONS[j].B.substring(0, 6) + '…';
-          chipHtml += '<span class="answer-chip answer-chip--' + cls + '">Q' + (j+1) + ' ' + (ans === 'A' ? 'A' : 'B') + '</span>';
-        }
-
-        $('content').innerHTML = '' +
+        return '' +
           '<section class="card card--hero" aria-labelledby="result-type-heading">' +
           '<p class="label" id="result-type-heading">你的人格类型是：</p>' +
-          '<p class="name-cn">舔狗</p>' +
-          '<p class="name-code">LOVE-D</p>' +
+          '<p class="name-cn">' + (result.dominant === 'A' ? '人间清醒' : '纯爱战士') + '</p>' +
+          '<p class="name-code">' + (result.dominant === 'A' ? 'LOVE-X' : 'LOVE-M') + '</p>' +
           '<div class="illustration" aria-hidden="true">' +
           '<svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">' +
           '<ellipse cx="100" cy="198" rx="72" ry="14" fill="rgba(0,0,0,0.06)"/>' +
@@ -386,26 +318,49 @@
           '<path d="M106 84 Q112 78 118 84" fill="none" stroke="#e91e63" stroke-width="3" stroke-linecap="round"/>' +
           '<path d="M94 108 Q100 114 106 108" fill="none" stroke="#b71c1c" stroke-width="2" stroke-linecap="round"/>' +
           '</svg></div>' +
-          '<div class="pill-wrap"><span class="pill-tag">已清屏</span></div>' +
-          '<p class="tagline">' + tagline + '</p>' +
+          '<div class="pill-wrap"><span class="pill-tag">' + (result.dominant === 'A' ? '童锦程附体' : '真心大于套路') + '</span></div>' +
+          '<p class="tagline">' + result.desc.split('。')[0] + '。</p>' +
           '</section>' +
 
-          catCard('cat-badge--love',  '骚操作',     loveResult) +
-          catCard('cat-badge--value', '感情观',     valueResult) +
-          catCard('cat-badge--fam',   '日常发疯',   famResult) +
+          '<section class="card">' +
+          '<h2 class="cat-title">' + (result.dominant === 'A' ? 'A 型 · 务实派' : 'B 型 · 浪漫派') + '</h2>' +
+          '<div class="cat-tags">' + tagHtml + '</div>' +
+          '<p class="cat-desc">' + result.desc + '</p>' +
+          '<div class="cat-progress-wrap">' +
+          '<div class="cat-progress-label">' +
+          '<span>A型 ' + result.aPct + '%</span>' +
+          '<span>B型 ' + result.bPct + '%</span>' +
+          '</div>' +
+          '<div class="cat-progress">' +
+          '<div class="cat-progress__fill cat-progress__fill--' + fill + '" style="width:' + (result.dominant === 'A' ? result.aPct : result.bPct) + '%"></div>' +
+          '</div></div></section>' +
 
           '<section class="card">' +
           '<h2 class="cat-title" style="font-size:18px;margin:0 0 14px;">答题记录</h2>' +
-          '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;">' + chipHtml + '</div>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;">';
+      }
+
+      function renderResult(answers) {
+        var result = getResult(answers);
+
+        var chipHtml = '';
+        for (var j = 0; j < QUESTIONS.length; j++) {
+          var ans = answers[j];
+          var cls = ans === 'A' ? 'a' : 'b';
+          chipHtml += '<span class="answer-chip answer-chip--' + cls + '">Q' + (j+1) + ' ' + (ans === 'A' ? 'A' : 'B') + '</span>';
+        }
+
+        $('content').innerHTML = buildCard(result) + chipHtml + '' +
+          '</div>' +
           '<div class="stat-boxes">' +
           '<div class="stat-box stat-box--a">' +
-          '<div class="stat-number">' + aTotal + '</div>' +
+          '<div class="stat-number">' + result.aCount + '</div>' +
           '<div class="stat-label">A 型作答</div></div>' +
           '<div class="stat-box stat-box--b">' +
-          '<div class="stat-number">' + bTotal + '</div>' +
+          '<div class="stat-number">' + result.bCount + '</div>' +
           '<div class="stat-label">B 型作答</div></div></div>' +
           '<p style="margin:0;font-size:14px;color:var(--text-muted);text-align:center;">' +
-          '共 18 题 · 她更偏向 <strong style="color:var(--green-primary)">' + (bPct >= 50 ? 'B 型' : 'A 型') + '</strong> 取向（' + bPct + '%）</p>' +
+          '共 ' + answers.length + ' 题 · 你是 <strong style="color:var(--green-primary)">' + (result.dominant === 'A' ? '务实派' : '浪漫派') + '</strong></p>' +
           '</section>' +
 
           '<p class="result-footer-nav"><a onclick="restart()">重新测试</a></p>';
