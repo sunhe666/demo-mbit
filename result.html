@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>SBTI 人格测试 — 结果</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/common.css" />
+    <style>
+      .page-result {
+        background: var(--bg-page);
+        min-height: 100vh;
+      }
+
+      .page-result .app-shell {
+        padding: 20px 16px 40px;
+        gap: 16px;
+      }
+
+      .result-header {
+        text-align: center;
+        padding: 8px 0 4px;
+      }
+
+      .result-header__title {
+        font-size: 17px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+      }
+
+      .result-header__sub {
+        font-size: 12px;
+        color: var(--text-light);
+        margin: 6px 0 0;
+      }
+
+      .card {
+        background: var(--bg-card);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-card);
+        padding: 24px 20px 28px;
+        overflow: hidden;
+      }
+
+      .card--hero {
+        background: linear-gradient(180deg, #f3faf4 0%, #ffffff 55%);
+        text-align: center;
+      }
+
+      .card--hero .label {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 12px;
+      }
+
+      .card--hero .name-cn {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 0 0 6px;
+        letter-spacing: 0.02em;
+      }
+
+      .card--hero .name-code {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--green-primary);
+        margin: 0 0 16px;
+        letter-spacing: 0.06em;
+      }
+
+      .card--hero .illustration {
+        margin: 8px auto 16px;
+        max-width: 200px;
+      }
+
+      .card--hero .illustration svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .card--hero .pill-wrap {
+        margin-bottom: 18px;
+      }
+
+      .card--hero .tagline {
+        font-family: var(--font-hand);
+        font-size: 18px;
+        line-height: 1.6;
+        color: var(--text-muted);
+        margin: 0;
+      }
+
+      .category-card {
+        position: relative;
+        padding-top: 32px;
+      }
+
+      .cat-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: inline-block;
+        padding: 4px 16px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+      }
+
+      .cat-badge--love  { background: #fce4ec; color: #c62828; }
+      .cat-badge--value { background: #e3f2fd; color: #1565c0; }
+      .cat-badge--fam   { background: #fff3e0; color: #e65100; }
+
+      .cat-title {
+        font-family: var(--font-serif-title);
+        font-size: 18px;
+        font-weight: 700;
+        color: #111;
+        margin: 0 0 10px;
+        text-align: center;
+      }
+
+      .cat-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 14px;
+      }
+
+      .cat-tag {
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .cat-tag--a { background: #e0f2f1; color: #00695c; }
+      .cat-tag--b { background: #ede7f6; color: #6a1b9a; }
+
+      .cat-desc {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        line-height: 1.7;
+        color: var(--text-muted);
+        margin: 0;
+        text-align: left;
+      }
+
+      .cat-progress-wrap {
+        margin: 12px 0 0;
+      }
+
+      .cat-progress-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--text-light);
+        margin-bottom: 6px;
+      }
+
+      .cat-progress {
+        height: 8px;
+        border-radius: 999px;
+        background: #f0f0f0;
+        overflow: hidden;
+      }
+
+      .cat-progress__fill {
+        height: 100%;
+        border-radius: 999px;
+        transition: width 0.6s ease;
+      }
+
+      .cat-progress__fill--a { background: linear-gradient(90deg, #26a69a, #4db6ac); }
+      .cat-progress__fill--b { background: linear-gradient(90deg, #7b1fa2, #ab47bc); }
+
+      .result-footer-nav {
+        text-align: center;
+        margin-top: 8px;
+        font-size: 13px;
+      }
+
+      .result-footer-nav a {
+        color: #5c6bc0;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      .no-answer-tip {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-light);
+        font-size: 15px;
+      }
+
+      .answer-chip {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 500;
+        margin: 2px;
+      }
+
+      .answer-chip--a { background: #e0f2f1; color: #00695c; }
+      .answer-chip--b { background: #ede7f6; color: #6a1b9a; }
+
+      .stat-boxes {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .stat-box {
+        flex: 1;
+        text-align: center;
+        padding: 14px 8px;
+        border-radius: 14px;
+      }
+
+      .stat-box--a { background: #e0f2f1; color: #00695c; }
+      .stat-box--b { background: #ede7f6; color: #6a1b9a; }
+
+      .stat-number {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body class="page-result">
+    <header class="result-header">
+      <h1 class="result-header__title">SBTI 人格测试</h1>
+      <p class="result-header__sub">测试结果</p>
+    </header>
+    <div class="app-shell" id="content"></div>
+
+    <script>
+      var $ = function(id) { return document.getElementById(id); };
+
+      var QUESTIONS = [
+        { id:1,  category:'爱情观念', A:'被理解和被在乎',           B:'稳定和安全感' },
+        { id:2,  category:'爱情观念', A:'当下说清楚，冷战不过一天',   B:'需要冷静一下再聊' },
+        { id:3,  category:'爱情观念', A:'一个很爱你但你没感觉的人',   B:'你很爱但对方没那么爱你的人' },
+        { id:4,  category:'爱情观念', A:'失落但理解，想下次再约',     B:'生气，需要对方补偿' },
+        { id:5,  category:'爱情观念', A:'非常重要，健康距离感',        B:'不重要，恋爱就该黏一起' },
+        { id:6,  category:'爱情观念', A:'可以给一次机会',            B:'没有下次' },
+        { id:7,  category:'三观',     A:'家庭幸福、心态平和',         B:'事业有成、经济自由' },
+        { id:8,  category:'三观',     A:'稳定安逸，早九晚六',         B:'有挑战性，愿为梦想折腾' },
+        { id:9,  category:'三观',     A:'不参与也不传，听听而已',     B:'直接打断，提醒对方' },
+        { id:10, category:'三观',     A:'不重要，做自己就好',         B:'重要，有些事不能让步' },
+        { id:11, category:'三观',     A:'提升自己、学习新东西',        B:'维护关系、多陪身边人' },
+        { id:12, category:'三观',     A:'直接问他',                   B:'等他主动提，不好意思催' },
+        { id:13, category:'家庭观念', A:'想要（1个或多个）',          B:'不想要 / 不确定' },
+        { id:14, category:'家庭观念', A:'和父母保持距离，单独住',     B:'和父母住一起更温馨' },
+        { id:15, category:'家庭观念', A:'回老家陪父母',               B:'和伴侣出去旅游' },
+        { id:16, category:'家庭观念', A:'两个人共同分担',             B:'有一方多承担也没关系' },
+        { id:17, category:'家庭观念', A:'尽力帮忙，不分你我',         B:'可以帮，但要量力而行' },
+        { id:18, category:'家庭观念', A:'妥协一部分，努力磨合',        B:'坚持底线，分歧不能忍' },
+      ];
+
+      var LOVE_MAP = {
+        A: {
+          desc: '她对感情的态度偏向理性与独立。她不认为恋爱需要时刻黏在一起，独立空间对她来说是健康关系的必要条件。面对冲突时她倾向于冷静处理而非当场爆发。她对感情的容忍度适中，底线清晰但不严苛——可以给一次机会，但前提是对方真的认识到问题。整体而言，她是一个既有情感需求又保持自我边界的人，和她相处需要给她足够的尊重和空间，而不是用情绪施压。',
+          tags: ['独立空间', '理性沟通', '有底线']
+        },
+        B: {
+          desc: '她对感情的态度偏向投入与专一。独立空间对她来说并不是最重要的，她更在意两个人能不能黏在一起、能不能时刻感受到对方的存在。冲突时她需要冷静期，说明她情绪感知较深但处理方式偏内敛。她对感情有比较强的底线意识——触碰了就没有下次，说明她对原则问题毫不妥协。整体而言，她是那种一旦投入就很认真的人，需要被坚定地选择和在乎。',
+          tags: ['情感投入', '需要陪伴', '底线清晰']
+        }
+      };
+
+      var VALUE_MAP = {
+        A: {
+          desc: '她的价值观偏向内在安定型。她认为最大的成功是家庭幸福和心态平和，而不是外在的事业成就。在生活选择上她更倾向于稳定安逸，不喜欢冒险和折腾。在人际关系中她比较圆融，不喜欢正面冲突，宁愿听而不传。在面子这件事上她也不太纠结，更在乎真实的感受而不是外界的评价。整体而言，她是一个内心安定、不太被外界标准绑架的人，适合找一个同样重视内在生活的人。',
+          tags: ['重视家庭', '回避冲突', '内心安定']
+        },
+        B: {
+          desc: '她的价值观偏向外在成就型。她认为最大的成功是事业有成和经济自由，追求有挑战性的生活，不甘于平淡。在人际关系中她是行动派，听到有人在背后说朋友坏话会直接打断提醒，不喜欢绕弯子。她也比较在意面子，有些事情不能让步。整体而言，她有清晰的目标感和原则性，生活中有明确的优先级，适合找一个有上进心、能和她一起成长的人。',
+          tags: ['追求成就', '有原则', '直面冲突']
+        }
+      };
+
+      var FAM_MAP = {
+        A: {
+          desc: '她在家庭观念上偏向现代独立型。她愿意要孩子，但更希望婚后和父母保持一定的距离，自己独立生活。春节倾向于回家陪父母，说明她重视传统家庭纽带，但不希望和原生家庭深度绑定。在家务和财务上她有清晰的边界意识——可以帮忙但要量力而行，遇到分歧会坚持底线不愿妥协。整体而言，她是一个既重视家庭又保持边界感的人，婚后的独立生活空间对她来说比较重要。',
+          tags: ['独立小家', '边界清晰', '传统纽带']
+        },
+        B: {
+          desc: '她在家庭观念上偏向传统亲密型。她对要不要孩子没有强烈意愿，更倾向于保持开放。对于婚后生活，她希望能和父母住在一起，享受大家庭的温暖。假期更愿意和伴侣出去旅游，说明她把伴侣关系放在核心位置。在家务和财务上她更愿意包容和付出，不太计较谁做得多谁做得少。遇到分歧时她会选择妥协磨合，说明她愿意为关系让步。整体而言，她是一个把家庭放在很重要位置的人，适合找一个同样重视家庭、能和她一起经营温暖家庭的人。',
+          tags: ['重视家庭', '包容付出', '愿意磨合']
+        }
+      };
+
+      function getCatResult(answers, indices, typeMap) {
+        var aCount = 0;
+        for (var i = 0; i < indices.length; i++) {
+          if (answers[indices[i]] === 'A') aCount++;
+        }
+        var total = indices.length;
+        var bCount = total - aCount;
+        var aPct = Math.round(aCount / total * 100);
+        var bPct = 100 - aPct;
+        var dominant = aCount > bCount ? 'A' : (aCount < bCount ? 'B' : 'A');
+        var traits = typeMap[dominant];
+        return { aCount: aCount, bCount: bCount, aPct: aPct, bPct: bPct, dominant: dominant, desc: traits.desc, tags: traits.tags };
+      }
+
+      function catCard(badgeCls, badgeTxt, result) {
+        var fill = result.dominant === 'A' ? 'a' : 'b';
+        var tagHtml = '';
+        for (var i = 0; i < result.tags.length; i++) {
+          tagHtml += '<span class="cat-tag cat-tag--' + fill + '">' + result.tags[i] + '</span>';
+        }
+        return '<section class="card category-card" aria-label="' + badgeTxt + '结果">' +
+          '<div class="cat-badge ' + badgeCls + '">' + badgeTxt + '</div>' +
+          '<h2 class="cat-title">' + (result.dominant === 'A' ? 'A 型倾向' : 'B 型倾向') + '</h2>' +
+          '<div class="cat-tags">' + tagHtml + '</div>' +
+          '<p class="cat-desc">' + result.desc + '</p>' +
+          '<div class="cat-progress-wrap">' +
+          '<div class="cat-progress-label">' +
+          '<span>A型 ' + result.aPct + '%</span>' +
+          '<span>B型 ' + result.bPct + '%</span>' +
+          '</div>' +
+          '<div class="cat-progress">' +
+          '<div class="cat-progress__fill cat-progress__fill--' + fill + '" style="width:' + (result.dominant === 'A' ? result.aPct : result.bPct) + '%"></div>' +
+          '</div></div></section>';
+      }
+
+      function renderResult(answers) {
+        var loveResult  = getCatResult(answers, [0,1,2,3,4,5],   LOVE_MAP);
+        var valueResult = getCatResult(answers, [6,7,8,9,10,11], VALUE_MAP);
+        var famResult   = getCatResult(answers, [12,13,14,15,16,17], FAM_MAP);
+
+        var aTotal = 0, bTotal = 0;
+        for (var i = 0; i < answers.length; i++) {
+          if (answers[i] === 'A') aTotal++;
+          else bTotal++;
+        }
+        var bPct = Math.round(bTotal / 18 * 100);
+        var tagline = loveResult.dominant === 'B'
+          ? '深情不是卑微，是敢于先付出。'
+          : '安稳不是停滞，是在平凡里找到幸福。';
+
+        var chipHtml = '';
+        for (var j = 0; j < QUESTIONS.length; j++) {
+          var ans = answers[j];
+          var cls = ans === 'A' ? 'a' : 'b';
+          var label = ans === 'A' ? QUESTIONS[j].A.substring(0, 6) + '…' : QUESTIONS[j].B.substring(0, 6) + '…';
+          chipHtml += '<span class="answer-chip answer-chip--' + cls + '">Q' + (j+1) + ' ' + (ans === 'A' ? 'A' : 'B') + '</span>';
+        }
+
+        $('content').innerHTML = '' +
+          '<section class="card card--hero" aria-labelledby="result-type-heading">' +
+          '<p class="label" id="result-type-heading">你的人格类型是：</p>' +
+          '<p class="name-cn">舔狗</p>' +
+          '<p class="name-code">LOVE-D</p>' +
+          '<div class="illustration" aria-hidden="true">' +
+          '<svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">' +
+          '<ellipse cx="100" cy="198" rx="72" ry="14" fill="rgba(0,0,0,0.06)"/>' +
+          '<polygon points="100,28 138,52 130,108 70,108 62,52" fill="#66bb6a"/>' +
+          '<polygon points="62,52 70,108 48,118 40,70" fill="#4caf50"/>' +
+          '<polygon points="138,52 130,108 152,118 160,70" fill="#43a047"/>' +
+          '<polygon points="70,108 130,108 124,152 76,152" fill="#e53935"/>' +
+          '<polygon points="76,152 124,152 118,178 82,178" fill="#c62828"/>' +
+          '<polygon points="124,118 152,118 138,145 112,138" fill="#ef5350"/>' +
+          '<circle cx="88" cy="88" r="14" fill="#ffcdd2"/>' +
+          '<circle cx="112" cy="88" r="14" fill="#ffcdd2"/>' +
+          '<path d="M82 84 Q88 78 94 84" fill="none" stroke="#e91e63" stroke-width="3" stroke-linecap="round"/>' +
+          '<path d="M106 84 Q112 78 118 84" fill="none" stroke="#e91e63" stroke-width="3" stroke-linecap="round"/>' +
+          '<path d="M94 108 Q100 114 106 108" fill="none" stroke="#b71c1c" stroke-width="2" stroke-linecap="round"/>' +
+          '</svg></div>' +
+          '<div class="pill-wrap"><span class="pill-tag">已清屏</span></div>' +
+          '<p class="tagline">' + tagline + '</p>' +
+          '</section>' +
+
+          catCard('cat-badge--love',  '爱情观念', loveResult) +
+          catCard('cat-badge--value', '三观倾向',  valueResult) +
+          catCard('cat-badge--fam',   '家庭观念',  famResult) +
+
+          '<section class="card">' +
+          '<h2 class="cat-title" style="font-size:18px;margin:0 0 14px;">答题记录</h2>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;">' + chipHtml + '</div>' +
+          '<div class="stat-boxes">' +
+          '<div class="stat-box stat-box--a">' +
+          '<div class="stat-number">' + aTotal + '</div>' +
+          '<div class="stat-label">A 型作答</div></div>' +
+          '<div class="stat-box stat-box--b">' +
+          '<div class="stat-number">' + bTotal + '</div>' +
+          '<div class="stat-label">B 型作答</div></div></div>' +
+          '<p style="margin:0;font-size:14px;color:var(--text-muted);text-align:center;">' +
+          '共 18 题 · 她更偏向 <strong style="color:var(--green-primary)">' + (bPct >= 50 ? 'B 型' : 'A 型') + '</strong> 取向（' + bPct + '%）</p>' +
+          '</section>' +
+
+          '<p class="result-footer-nav"><a onclick="restart()">重新测试</a></p>';
+      }
+
+      function restart() {
+        localStorage.removeItem('mbti_answers');
+        localStorage.removeItem('mbti_done');
+        window.location.href = 'question.html';
+      }
+
+      var raw = localStorage.getItem('mbti_answers');
+      if (!raw) {
+        $('content').innerHTML = '<div class="no-answer-tip">暂无答题记录，<a href="question.html" style="color:#5c6bc0;text-decoration:underline">前往测试</a></div>';
+      } else {
+        renderResult(JSON.parse(raw));
+      }
+    </script>
+  </body>
+</html>

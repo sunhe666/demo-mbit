@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>MBTI性格测试</title>
+    <link rel="stylesheet" href="css/common.css" />
+    <style>
+      .page-question {
+        background: linear-gradient(165deg, #e8e4f0 0%, #f0ecf5 40%, #e3eaf5 100%);
+        min-height: 100vh;
+      }
+
+      .page-question .app-shell {
+        justify-content: center;
+        padding: 24px 16px 32px;
+      }
+
+      .card-question {
+        background: var(--bg-card);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-card);
+        padding: 28px 22px 36px;
+        position: relative;
+      }
+
+      .card-question__title {
+        text-align: center;
+        font-size: 17px;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 18px;
+      }
+
+      .progress {
+        height: 6px;
+        border-radius: 999px;
+        background: #e8ecf0;
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+
+      .progress__bar {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #9ec5e8, #b8d4ef);
+        transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .category-tag {
+        display: inline-block;
+        font-size: 12px;
+        color: #fff;
+        background: #9c7ec8;
+        border-radius: 999px;
+        padding: 3px 12px;
+        margin-bottom: 12px;
+        font-weight: 500;
+      }
+
+      .card-question__q {
+        font-size: 16px;
+        line-height: 1.55;
+        color: #222;
+        margin: 0 0 22px;
+        text-align: left;
+      }
+
+      .btn-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn-choice {
+        width: 100%;
+        padding: 16px 20px;
+        border-radius: var(--radius-btn);
+        font-size: 16px;
+        font-weight: 500;
+        transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
+        border: 2px solid transparent;
+        text-align: left;
+      }
+
+      .btn-choice:active {
+        transform: scale(0.97);
+      }
+
+      .btn-choice--a {
+        background: #e0f2f1;
+        color: #00695c;
+      }
+
+      .btn-choice--a.selected {
+        background: #00695c;
+        color: #fff;
+        border-color: #004d40;
+      }
+
+      .btn-choice--b {
+        background: #ede7f6;
+        color: #6a1b9a;
+      }
+
+      .btn-choice--b.selected {
+        background: #6a1b9a;
+        color: #fff;
+        border-color: #4a148c;
+      }
+
+      .btn-prev {
+        margin-top: 8px;
+        width: 100%;
+        padding: 14px 20px;
+        border-radius: var(--radius-btn);
+        font-size: 15px;
+        color: #555;
+        background: #f3f4f6;
+        transition: background 0.15s, opacity 0.15s;
+      }
+
+      .btn-prev:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      .btn-submit {
+        margin-top: 8px;
+        width: 100%;
+        padding: 14px 20px;
+        border-radius: var(--radius-btn);
+        font-size: 15px;
+        color: #fff;
+        background: var(--green-primary);
+        display: none;
+      }
+
+      .btn-submit:active {
+        transform: scale(0.97);
+      }
+
+      .card-question__pill-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .dots {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #d0d5dd;
+        transition: background 0.2s;
+      }
+
+      .dot.answered {
+        background: var(--green-primary);
+      }
+
+      .dot.current {
+        background: #5c9bd6;
+        transform: scale(1.3);
+      }
+
+      .question-counter {
+        text-align: center;
+        font-size: 12px;
+        color: var(--text-light);
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body class="page-question">
+    <div class="app-shell">
+      <main class="card-question" aria-label="答题区域">
+        <h1 class="card-question__title">MBTI性格测试</h1>
+        <div class="progress" role="progressbar" aria-label="答题进度">
+          <div class="progress__bar" id="progressBar"></div>
+        </div>
+        <div class="category-tag" id="categoryTag"></div>
+        <p class="card-question__q" id="questionText"></p>
+        <div class="btn-stack">
+          <button type="button" class="btn-choice btn-choice--a" id="btnA"></button>
+          <button type="button" class="btn-choice btn-choice--b" id="btnB"></button>
+          <button type="button" class="btn-prev" id="btnPrev" disabled>上一题</button>
+          <button type="button" class="btn-submit" id="btnSubmit">查看结果</button>
+        </div>
+        <div class="dots" id="dotsContainer"></div>
+        <div class="question-counter" id="questionCounter"></div>
+       
+      </main>
+    </div>
+
+    <script>
+      /* ─────────────── 题目数据 ─────────────── */
+      const QUESTIONS = [
+        // ── 爱情观念 ──
+        {
+          id: 1, category: '爱情观念',
+          text: '1. 你认为一段好的感情里，最重要的是？',
+          A: '被理解和被在乎', B: '稳定和安全感'
+        },
+        {
+          id: 2, category: '爱情观念',
+          text: '2. 如果你和对方吵架了，你会怎么做？',
+          A: '当下说清楚，冷战不超过一天', B: '需要冷静一下再聊'
+        },
+        {
+          id: 3, category: '爱情观念',
+          text: '3. 你更倾向于选择？',
+          A: '一个很爱你但你没感觉的人', B: '一个你很爱但对方没那么爱你的人'
+        },
+        {
+          id: 4, category: '爱情观念',
+          text: '4. 约会时对方临时有事取消，你会？',
+          A: '有点失落但理解，想下次再约', B: '有点生气，需要对方补偿'
+        },
+        {
+          id: 5, category: '爱情观念',
+          text: '5. 你觉得恋爱中保持一定的独立空间重要吗？',
+          A: '非常重要，距离感是健康的', B: '不重要，恋爱了就该黏在一起'
+        },
+        {
+          id: 6, category: '爱情观念',
+          text: '6. 对方触碰了你的底线但道歉了，你会？',
+          A: '可以给一次机会', B: '没有下次'
+        },
+        // ── 三观 ──
+        {
+          id: 7, category: '三观',
+          text: '7. 你觉得一个人最大的成功是？',
+          A: '家庭幸福、心态平和', B: '事业有成、经济自由'
+        },
+        {
+          id: 8, category: '三观',
+          text: '8. 你更愿意过什么样的生活？',
+          A: '稳定安逸，早九晚六', B: '有挑战性，愿意为梦想折腾'
+        },
+        {
+          id: 9, category: '三观',
+          text: '9. 如果你听到有人在背后说另一个朋友的坏话，你会？',
+          A: '不参与也不传，但也听听', B: '直接打断，提醒对方'
+        },
+        {
+          id: 10, category: '三观',
+          text: '10. 你认为"面子"重要吗？',
+          A: '不重要，做自己就好', B: '重要，有些事不能让步'
+        },
+        {
+          id: 11, category: '三观',
+          text: '11. 你更愿意把时间花在？',
+          A: '提升自己、学习新东西', B: '维护关系、多陪身边人'
+        },
+        {
+          id: 12, category: '三观',
+          text: '12. 如果朋友找你借了一笔钱很久没还，你会？',
+          A: '直接问他', B: '等他主动提，不太好意思催'
+        },
+        // ── 家庭观念 ──
+        {
+          id: 13, category: '家庭观念',
+          text: '13. 你以后想要孩子吗？',
+          A: '想要（1个或多个）', B: '不想要 / 不确定'
+        },
+        {
+          id: 14, category: '家庭观念',
+          text: '14. 你理想的婚后生活是？',
+          A: '和双方父母保持一定距离，单独住', B: '能和父母住在一起更温馨'
+        },
+        {
+          id: 15, category: '家庭观念',
+          text: '15. 春节 / 长假你更倾向于？',
+          A: '回老家陪父母', B: '和伴侣出去旅游'
+        },
+        {
+          id: 16, category: '家庭观念',
+          text: '16. 关于做饭和做家务，你觉得应该是？',
+          A: '两个人共同分担', B: '有一方多承担一些也没关系'
+        },
+        {
+          id: 17, category: '家庭观念',
+          text: '17. 对方家里有什么事需要用钱，你会？',
+          A: '尽力帮忙，不分你我', B: '可以帮，但要量力而行'
+        },
+        {
+          id: 18, category: '家庭观念',
+          text: '18. 如果你和伴侣对未来规划出现分歧，你会？',
+          A: '妥协一部分，努力磨合', B: '坚持自己的底线，分歧不能忍'
+        },
+      ];
+
+      /* ─────────────── 状态 ─────────────── */
+      const TOTAL   = QUESTIONS.length;
+      const answers = new Array(TOTAL).fill(null); // null | 'A' | 'B'
+      let cur = 0;
+
+      /* ─────────────── DOM ─────────────── */
+      const $ = id => document.getElementById(id);
+      const progressBar   = $('progressBar');
+      const categoryTag   = $('categoryTag');
+      const questionText  = $('questionText');
+      const btnA          = $('btnA');
+      const btnB          = $('btnB');
+      const btnPrev       = $('btnPrev');
+      const btnSubmit     = $('btnSubmit');
+      const dotsContainer = $('dotsContainer');
+      const questionCounter = $('questionCounter');
+
+      /* ─────────────── 渲染进度点 ─────────────── */
+      function buildDots() {
+        dotsContainer.innerHTML = '';
+        QUESTIONS.forEach((_, i) => {
+          const d = document.createElement('div');
+          d.className = 'dot';
+          dotsContainer.appendChild(d);
+        });
+      }
+
+      function refreshDots() {
+        const dots = dotsContainer.querySelectorAll('.dot');
+        dots.forEach((d, i) => {
+          d.className = 'dot';
+          if (answers[i] !== null) d.classList.add('answered');
+          if (i === cur)            d.classList.add('current');
+        });
+      }
+
+      /* ─────────────── 渲染当前题目 ─────────────── */
+      function render() {
+        const pct = Math.round(((cur + 1) / TOTAL) * 100);
+        progressBar.style.width = pct + '%';
+
+        const q = QUESTIONS[cur];
+        questionText.textContent = q.text;
+        btnA.textContent = q.A;
+        btnB.textContent = q.B;
+
+        // 分类标签
+        categoryTag.textContent = q.category;
+
+        // 选中高亮
+        btnA.classList.toggle('selected', answers[cur] === 'A');
+        btnB.classList.toggle('selected', answers[cur] === 'B');
+
+        btnPrev.disabled = cur === 0;
+
+        // 最后一题且已作答 → 显示提交按钮
+        btnSubmit.style.display = (cur === TOTAL - 1 && answers[cur] !== null) ? 'block' : 'none';
+
+        questionCounter.textContent = `${cur + 1} / ${TOTAL}`;
+        refreshDots();
+      }
+
+      /* ─────────────── 选择答案 ─────────────── */
+      function pick(value) {
+        answers[cur] = value;
+        render();
+        if (cur < TOTAL - 1) {
+          cur++;
+          render();
+        }
+      }
+
+      /* ─────────────── 事件绑定 ─────────────── */
+      btnA.addEventListener('click', () => pick('A'));
+      btnB.addEventListener('click', () => pick('B'));
+      btnPrev.addEventListener('click', () => {
+        if (cur > 0) { cur--; render(); }
+      });
+      btnSubmit.addEventListener('click', () => {
+        localStorage.setItem('mbti_answers', JSON.stringify(answers));
+        window.location.href = 'result.html';
+      });
+
+      /* ─────────────── 启动 ─────────────── */
+      localStorage.removeItem('mbti_answers');
+      localStorage.removeItem('mbti_done');
+
+      buildDots();
+      render();
+    </script>
+  </body>
+</html>
